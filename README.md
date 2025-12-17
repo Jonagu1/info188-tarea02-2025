@@ -16,6 +16,7 @@ make
 ./prog <n> <nt> <algoritmo>
 ```
 <algoritmo> es para elegir cual paralelismo usar:
+    
     | 1 = CPU multi threads con OpenMP
     | 2 = GPU con CUDA
     | 3 = GPU con CUDA aprovechando la memoria compartida (__shared__)
@@ -28,9 +29,8 @@ python3 benchmark.py
 con esto se generaran los graficos en un png resultado_benchmark.png
 
 ## Detalles
-
-en CPU se mide el tiempo con openmp
-en GPU se mide el tiempo con cudaEvent para tener la medida exacta de la gpu sin pasar por un procesamiento cpu
+    en CPU se mide el tiempo con openmp
+    en GPU se mide el tiempo con cudaEvent para tener la medida exacta de la gpu sin pasar por un procesamiento cpu
 
 
 ## conclusiones
