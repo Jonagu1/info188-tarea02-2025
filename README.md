@@ -1,4 +1,4 @@
-# prueba 3:
+# Tarea 2 Matmul en paralelo
 
 ## Descripción
 Tarea de programacion en paralelo usando CPU, GPU (Con memoria compartida y/o tensor cores)
