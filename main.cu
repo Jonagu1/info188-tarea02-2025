@@ -55,11 +55,13 @@ __global__ void kernel_matmul_shared(int n, float *a, float *b, float *c){
 
     for (int m = 0; m < (n + BSIZE2D - 1) / BSIZE2D; m++) {
 
+        //Cargar A
         if (row < n && (m * BSIZE2D + tx) < n)
             As[ty][tx] = a[row * n + m * BSIZE2D + tx];
         else
             As[ty][tx] = 0.0f;
 
+        //Cargar B
         if (col < n && (m * BSIZE2D + ty) < n)
             Bs[ty][tx] = b[(m * BSIZE2D + ty) * n + col];
         else
@@ -73,6 +75,7 @@ __global__ void kernel_matmul_shared(int n, float *a, float *b, float *c){
         __syncthreads();
     }
 
+    //Guardar resultado
     if (row < n && col < n) {
         c[row * n + col] = sum;
     }
@@ -147,8 +150,6 @@ int main(int argc, char **argv){
 
         CHECK_CUDA(cudaMemcpy(ad, a, sizeof(float)*n*n, cudaMemcpyHostToDevice));
         CHECK_CUDA(cudaMemcpy(bd, b, sizeof(float)*n*n, cudaMemcpyHostToDevice));
-        // No copiamos C a device porque es solo salida, pero si quieres limpiar basura:
-        // cudaMemset(cd, 0, sizeof(float)*n*n);
 
         // (3) ejecutar matmul en GPU
         cudaEvent_t start, stop;
@@ -234,7 +235,6 @@ void cpu_matrix_mult_optimized(float* A, float* B, float* C_out , int n) {
             float s4 = 0, s5 = 0, s6 = 0, s7 = 0;
             int l = 0;
 
-            // Reemplacé 'k' (que no existía) por 'n'
             for (; l <= n - 8; l += 8){
                 s0 += A[i * n + l]     * B_T[j * n + l];
                 s1 += A[i * n + l + 1] * B_T[j * n + l + 1];
