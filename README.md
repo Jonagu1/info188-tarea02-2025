@@ -1,38 +1,99 @@
-# Tarea 2 Matmul en paralelo
+# Tarea 2: Matmul COMPA
+
+**Asignatura:** Programación en Paradigmas Funcional y Paralelo (INFO188)
+
+**Profesor:** Cristóbal Navarro
+
+**Fecha:** 19 de diciembre 2025
+
+**GitHub:** https://github.com/Jonagu1/info188-tarea02-2025
+
+## Integrantes del Grupo
+
+* Jonatan Aguero
+* Mayra Carrillo
+* Luciana Habert
+* Alen Rupailaf
+* Cristóbal Veas
 
 ## Descripción
-Tarea de programacion en paralelo usando CPU, GPU (Con memoria compartida y/o tensor cores)
 
-## Archivos
-* main.cu: El código principal. La CPU prepara los datos (porque es más fácil generar aleatorios ahí) y la GPU hace el cálculo pesado.
-* Makefile: Para compilar rápido usando make. Está configurado con -O3 (optimización) y le tuve que agregar el parametro arch=sm_50 para que funcionara en mi tarjeta MX130 que es un poco antigua
-* benchmark.py: Un script en Python que hice para automatizar las pruebas, graficar los tiempos y calcular el ancho de banda.
-* resultado_benchsmark_test.png: El gráfico resultante con los experimentos.
+Se implementa la mutiplicación de matrices de forma paralela usando distintos métodos:
+
+- CPU: mediante **OpenMP**.
+- GPU (con o sin memoria compartida): **CUDA**.
+
+Lo anterior permite realizar la comparación de rendimiento entre CPU y GPU mediante gráficos para posteriormente elaborar conclusiones respecto a los resultados obtenidos.
+
+## Estructura del repositorio
+
+- `main.cu`: El código del programa principal. La CPU siempre prepara los datos (porque es más fácil generar aleatorios ahí), para posteriormente realizar multiplicación de matrices en CPU o en GPU (con o sin memoria compartida) dependiendo del algoritmo seleccionado.
+- `Makefile`: Para compilar rápido usando make. Está configurado con -O3 (optimización) y se tuvo que añadir el parámetro arch=sm_50 para su correcto funcionamiento en tarjetas Nvidia GeForce MX130 (usada para pruebas rápidas).
+- `benchmark.py`: Script de Python elaborado para automatizar el proceso de experimentación con el programa principal y la creación de gráficos para análisis.
+- `benchmark_matmul.png`: El gráfico obtenido mediante el script `benchmark.py`.
 
 ## Ejecutar
 
-```
+### Programa principal
+
+Las instrucciones se describen a continuación, son para ejecutar el programa en un entorno local (requiere tarjeta gráfica dedicada).
+
+#### 1. Compilación
+
+```bash
 make
-./prog <n> <nt> <algoritmo>
 ```
-<algoritmo> es para elegir cual paralelismo usar:
-    
-    | 1 = CPU multi threads con OpenMP
-    | 2 = GPU con CUDA
-    | 3 = GPU con CUDA aprovechando la memoria compartida (__shared__)
-    | 4 = GPU con Tensor Cores
-    
-Para hacer pruebas de estos codigos / algoritmos se creo un script de python que ejecuta nuestro programa con los 4 modos en repetidas veces cada uno para crear graficos, se ejecuta con:
+
+#### 2. Ejecución usando parámetros
+
+```bash
+./prog <n> <nt> <alg>
 ```
+
+El parámetro `<alg>` permite elegir qué tipo de paralelismo usar:
+    
+- `1` = CPU multi threads con OpenMP
+- `2` = GPU con CUDA
+- `3` = GPU con CUDA aprovechando la memoria compartida (__shared__)
+
+### Benchmark
+
+El script de Python `benchmark.py` está adaptado para funcionar en el supercomputador [Patagón UACh](https://patagon.uach.cl/), usando la partición `A4000`. Para cambiar la partición o para usar el código de forma local, este debe ser modificado directamente.
+
+#### 1. Descarga de librerías
+
+Debido a que en el Patagón no hay acceso a `pip` ni a entornos virtuales de Python, debemos descargar las librerías localmente para posteriormente transferirlas al Patagón.
+
+```bash
+pip install matplotlib --target ./libraries --platform manylinux2014_x86_64 --only-binary=:all: --python-version 3.12
+```
+
+#### 2. Instalación de librerías en Patagón
+
+El directorio `libraries/` que contiene nuestras librerías debe ser copiada al Patagón, en la carpeta donde hayamos clonado el repositorio actual.
+
+```bash
+scp -r -P 2237 ./libraries/ <usuario>@patagon.uach.cl:<directorio repositorio>
+```
+
+#### 3. Ejecución
+
+El script automáticamente detecta las librerías de la carpeta `libraries/` (estrictamente debe tener ese nombre), por lo que ya puede ser ejecutado sin problemas.
+
+```bash
 python3 benchmark.py
 ```
-con esto se generaran los graficos en un png resultado_benchmark.png
 
-## Detalles
-    en CPU se mide el tiempo con openmp
-    en GPU se mide el tiempo con cudaEvent para tener la medida exacta de la gpu sin pasar por un procesamiento cpu
+## Resultados experimentales
 
+Utilizando la partición `A4000` del Patagón, se pudieron generar los siguientes gráficos mediante el script `benchmark.py`:
 
-## conclusiones
+![Gráfico benchmark](benchmark_matmul.png)
 
-En conclusión, 
+### Análisis de resultados
+
+PENDIENTE
+
+### Conclusiones
+
+PENDIENTE
