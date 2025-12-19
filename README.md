@@ -92,7 +92,12 @@ Utilizando la partición `A4000` del Patagón, se pudieron generar los siguiente
 
 ### Análisis de resultados
 
-PENDIENTE
+En el gráfico de Tiempo de Ejecución se observa que la versión CPU presenta un crecimiento acelerado del tiempo a medida que aumenta el tamaño de la matriz.
+
+Las versiones GPU superan a la CPU a partir de tamaños de matriz medianos. Para tamaños pequeños, el beneficio es menor debido al overhead asociado al lanzamiento de kernels y a la gestión de la ejecución en GPU.
+
+La versión GPU que utiliza memoria compartida presenta el mejor rendimiento en todos los tamaños evaluados, especialmente para matrices grandes. Esto se explica porque el uso de memoria compartida reduce significativamente los accesos a memoria global, permitiendo una mayor reutilización de datos y un mejor aprovechamiento de la jerarquía de memoria de la GPU.
+
 
 ### Conclusiones
 
