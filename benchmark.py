@@ -86,13 +86,33 @@ def main():
             print(f"[INFO] Usando algoritmo {alg}...")
 
             if num == 1:
-                cmd = f"srun -p cpu --container-workdir={os.getcwd()} ./prog {n} {nt} {num}"
+                cmd = [
+                    "srun",
+                    "-p",
+                    "cpu",
+                    f"--container-workdir={os.getcwd()}",
+                    "./prog",
+                    str(n),
+                    str(nt),
+                    str(num),
+                ]
             else:
-                cmd = f"srun -p A4000 --gpus=1 --container-name=cuda --container-workdir={os.getcwd()} ./prog {n} {nt} {num}"
+                cmd = [
+                    "srun",
+                    "-p",
+                    "A4000",
+                    "--gpus=1",
+                    "--container-name=cuda",
+                    f"--container-workdir={os.getcwd()}",
+                    "./prog",
+                    str(n),
+                    str(nt),
+                    str(num),
+                ]
 
             try:
                 result = subprocess.run(
-                    subprocess.list2cmdline(cmd),
+                    cmd,
                     capture_output=True,
                     text=True,
                 )
