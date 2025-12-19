@@ -128,7 +128,7 @@ int main(int argc, char **argv){
 
     if (alg == 1) {
         // MODO CPU
-        printf("[INFO] Ejecutando multiplicación en CPU (OpenMP)\n");
+        printf("\n[INFO] Ejecutando multiplicación en CPU (OpenMP)\n");
         double t1 = omp_get_wtime();
 
         cpu_matrix_mult_optimized(a, b, c, n);
@@ -138,7 +138,7 @@ int main(int argc, char **argv){
 
     } else {
         // MODO GPU
-        printf("[INFO] Ejecutando multiplicación en GPU (CUDA)\n");
+        printf("\n[INFO] Ejecutando multiplicación en GPU (CUDA)\n");
 
         // (2) dejando matrices en device
         float *ad, *bd, *cd;
