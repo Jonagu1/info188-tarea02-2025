@@ -1,7 +1,7 @@
 import multiprocessing
+import os
 import re
 import subprocess
-import os
 import sys
 
 # Como estamos en el Patagon, es necesario traer las librerías desde antes
@@ -85,9 +85,14 @@ def main():
         for alg, num in [("CPU", 1), ("GPU", 2), ("GPU Memoria Compartida", 3)]:
             print(f"[INFO] Usando algoritmo {alg}...")
 
+            if num == 1:
+                cmd = f"srun -p cpu --container-workdir={os.getcwd()} ./prog {n} {nt} {num}"
+            else:
+                cmd = f"srun -p A4000 --gpus=1 --container-name=cuda --container-workdir={os.getcwd()} ./prog {n} {nt} {num}"
+
             try:
                 result = subprocess.run(
-                    ["srun", "-p", "A4000", "--gpus=1", "--container-name=cuda", f"--container-workdir={os.getcwd()}", "./prog", str(n), str(nt), str(num)],
+                    subprocess.list2cmdline(cmd),
                     capture_output=True,
                     text=True,
                 )
