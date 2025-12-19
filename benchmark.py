@@ -1,6 +1,11 @@
 import multiprocessing
 import re
 import subprocess
+import os
+import sys
+
+# Como estamos en el Patagon, es necesario traer las librerías desde antes
+sys.path.append(os.path.join(os.path.dirname(__file__), "libraries"))
 
 import matplotlib.pyplot as plt
 
@@ -82,7 +87,7 @@ def main():
 
             try:
                 result = subprocess.run(
-                    ["./prog", str(n), str(nt), str(num)],
+                    ["srun", "-p", "A4000", "--gpus=1", "--container-name=cuda", f"--container-workdir={os.getcwd()}", "./prog", str(n), str(nt), str(num)],
                     capture_output=True,
                     text=True,
                 )
