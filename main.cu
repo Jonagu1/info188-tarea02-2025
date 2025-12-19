@@ -88,9 +88,9 @@ int main(int argc, char **argv){
     // 1. ARGUMENTOS
     if(argc != 4){
         fprintf(stderr, "Uso: ./prog <n> <nt> <alg>\n");
-        fprintf(stderr, "   <n>   : Tamano de matriz\n");
+        fprintf(stderr, "   <n>   : Tamaño de matriz\n");
         fprintf(stderr, "   <nt>  : Hilos OpenMP\n");
-        fprintf(stderr, "   <alg> : 1=CPU; 2=GPU básica; 3=GPU shared\n");
+        fprintf(stderr, "   <alg> : 1=CPU; 2=GPU; 3=GPU Shared\n");
         exit(EXIT_FAILURE);
     }
 
@@ -106,7 +106,7 @@ int main(int argc, char **argv){
     // Configurar OpenMP
     omp_set_num_threads(nt);
 
-    printf("Config: N = %d, Hilos = %d, Modo = %s\n", n, nt, alg == 1 ? "CPU" : "GPU");
+    printf("[INFO] Config: N = %d, Hilos = %d, Modo = %s\n", n, nt, alg == 1 ? "CPU" : "GPU");
 
     // (1) creando matrices en host
     float *a = new float[n*n];
@@ -134,7 +134,7 @@ int main(int argc, char **argv){
         cpu_matrix_mult_optimized(a, b, c, n);
 
         double t2 = omp_get_wtime();
-        printf("Tiempo: %f secs\n", t2 - t1);
+        printf("[INFO] Tiempo: %f\n", (t2 - t1) * 1000.0f);
 
     } else {
         // MODO GPU
@@ -171,7 +171,7 @@ int main(int argc, char **argv){
         CHECK_CUDA(cudaEventElapsedTime(&msecs, start, stop));
         CHECK_CUDA(cudaGetLastError()); // Verificar errores de kernel
 
-        printf("Tiempo: %f secs.\n", msecs/1000.0f);
+        printf("[INFO] Tiempo: %f\n", msecs);
 
         // (4) copiar resultado a host
         printf("[INFO] Copiando resultado desde GPU al host...\n"); fflush(stdout);
