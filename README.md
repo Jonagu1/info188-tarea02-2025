@@ -58,7 +58,7 @@ El parámetro `<alg>` permite elegir qué tipo de paralelismo usar:
 
 ### Benchmark
 
-El script de Python `benchmark.py` está adaptado para funcionar en el supercomputador [Patagón UACh](https://patagon.uach.cl/), usando la partición `A4000`. Para cambiar la partición o para usar el código de forma local, este debe ser modificado directamente.
+El script de Python `benchmark.py` está adaptado para funcionar en el supercomputador [Patagón UACh](https://patagon.uach.cl/), usando las particiones `AI` y `A4000`. Para cambiar las particiones o usar el código de forma local, este debe ser modificado directamente.
 
 #### 1. Descarga de librerías
 
