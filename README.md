@@ -10,7 +10,7 @@
 
 ## Integrantes del Grupo
 
-* Jonatan Aguero
+* Jonatan Agüero
 * Mayra Carrillo
 * Luciana Habert
 * Alen Rupailaf
