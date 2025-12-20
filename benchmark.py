@@ -78,7 +78,7 @@ def main():
     print("[INFO] Inicializando benchmark Matmul")
 
     for n in n_values:
-        print(f"\n[INFO] Usando N= {n}...")
+        print(f"\n[INFO] Usando N = {n}...")
 
         for alg, num in [("CPU", 1), ("GPU", 2), ("GPU Memoria Compartida", 3)]:
             nt = multiprocessing.cpu_count()
