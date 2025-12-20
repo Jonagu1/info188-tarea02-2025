@@ -91,7 +91,7 @@ def main():
                     "-p",
                     "A4000",  # Se deseaba usar partición "cpu" de Patagón, pero esta se encontraba completamente ocupada al momento de la experimentación.
                     "-c",
-                    str(nt),
+                    "24",  # Estamos limitados a 24 hilos en partición "A4000".
                     f"--container-workdir={os.getcwd()}",
                     "./prog",
                     str(n),
