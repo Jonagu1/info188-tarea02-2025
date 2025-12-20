@@ -75,7 +75,7 @@ def main():
     n_values = [256, 512, 1024, 2048, 4096]
     times = {1: [], 2: [], 3: []}
 
-    print("[INFO] Inicializando benchmark MATMUL")
+    print("[INFO] Inicializando benchmark Matmul")
 
     for n in n_values:
         print(f"\n[INFO] Usando N= {n}...")
