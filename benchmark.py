@@ -89,7 +89,7 @@ def main():
                 cmd = [
                     "srun",
                     "-p",
-                    "AI",  # Se deseaba usar partición "cpu" de Patagón, pero esta se encontraba completamente ocupada al momento de la experimentación.
+                    "A4000",  # Se deseaba usar partición "cpu" de Patagón, pero esta se encontraba completamente ocupada al momento de la experimentación.
                     "-c",
                     str(nt),
                     f"--container-workdir={os.getcwd()}",
