@@ -81,8 +81,9 @@ def main():
         print(f"\n[INFO] Usando N= {n}...")
 
         for alg, num in [("CPU", 1), ("GPU", 2), ("GPU Memoria Compartida", 3)]:
-            # Usamos la máxima cantidad de hilos posibles de CPU para que sea una comparación justa contra GPU
-            nt = multiprocessing.cpu_count()
+            # Usamos la cantidad de núcleos que tiene la partición "A4000".
+            # Originalmente se tomaba la cantidad máxima de hilos posible, pero esto hacía que se quedara en espera indefinidamente en el Patagón.
+            nt = 24
 
             print(f"[INFO] Usando algoritmo {alg}...")
 
