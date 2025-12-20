@@ -81,17 +81,15 @@ def main():
         print(f"\n[INFO] Usando N= {n}...")
 
         for alg, num in [("CPU", 1), ("GPU", 2), ("GPU Memoria Compartida", 3)]:
-            # Usamos la cantidad de núcleos que tiene la partición "A4000".
-            # Originalmente se tomaba la cantidad máxima de hilos posible, pero esto hacía que se quedara en espera indefinidamente en el Patagón.
-            nt = 24
+            nt = multiprocessing.cpu_count()
 
-            print(f"[INFO] Usando algoritmo {alg}...")
+            print(f"[INFO] Usando algoritmo {alg} con {nt} hilos...")
 
             if num == 1:
                 cmd = [
                     "srun",
                     "-p",
-                    "A4000",  # Se deseaba usar partición "cpu" de Patagón, pero esta se encontraba completamente ocupada al momento de la experimentación.
+                    "AI",  # Se deseaba usar partición "cpu" de Patagón, pero esta se encontraba completamente ocupada al momento de la experimentación.
                     "-c",
                     str(nt),
                     f"--container-workdir={os.getcwd()}",
@@ -104,7 +102,7 @@ def main():
                 cmd = [
                     "srun",
                     "-p",
-                    "A4000",
+                    "AI",
                     "-c",
                     str(nt),
                     "--gpus=1",
