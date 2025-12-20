@@ -83,8 +83,6 @@ def main():
         for alg, num in [("CPU", 1), ("GPU", 2), ("GPU Memoria Compartida", 3)]:
             nt = multiprocessing.cpu_count()
 
-            print(f"[INFO] Usando algoritmo {alg} con {nt} hilos...")
-
             if num == 1:
                 nt = 24  # Estamos limitados a 24 núcleos en partición "A4000".
 
@@ -117,6 +115,8 @@ def main():
                 ]
 
             try:
+                print(f"[INFO] Usando algoritmo {alg} con {nt} hilos...")
+
                 result = subprocess.run(
                     cmd,
                     capture_output=True,
