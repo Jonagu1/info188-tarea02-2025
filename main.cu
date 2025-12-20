@@ -133,7 +133,7 @@ int main(int argc, char **argv){
         cpu_matrix_mult_optimized(a, b, c, n);
 
         double t2 = omp_get_wtime();
-        printf("[INFO] Tiempo: %f\n", (t2 - t1) * 1000.0f);
+        printf("[INFO] Tiempo: %f ms\n", (t2 - t1) * 1000.0f);
 
     } else {
         // MODO GPU
@@ -170,7 +170,7 @@ int main(int argc, char **argv){
         CHECK_CUDA(cudaEventElapsedTime(&msecs, start, stop));
         CHECK_CUDA(cudaGetLastError()); // Verificar errores de kernel
 
-        printf("[INFO] Tiempo: %f\n", msecs);
+        printf("[INFO] Tiempo: %f ms\n", msecs);
 
         // (4) copiar resultado a host
         printf("[INFO] Copiando resultado desde GPU al host...\n"); fflush(stdout);

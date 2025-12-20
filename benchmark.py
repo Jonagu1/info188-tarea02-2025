@@ -123,7 +123,7 @@ def main():
                     text=True,
                 )
 
-                match = re.search(r"\[INFO\] Tiempo:\s+([0-9.]+)", result.stdout)
+                match = re.search(r"\[INFO\] Tiempo:\s+([0-9.]+)\s*ms", result.stdout)
 
                 if match:
                     ms = float(match.group(1))
