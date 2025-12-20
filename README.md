@@ -86,19 +86,29 @@ python3 benchmark.py
 
 ## Resultados experimentales
 
-Utilizando la partición `A4000` del Patagón, se pudieron generar los siguientes gráficos mediante el script `benchmark.py`:
+Para la experimentación, se utilizó las particiones `A4000` (para matmul CPU) y `AI` (para matmul GPU con o sin memoria compartida) del Patagón, con el fin de hacer una comparación justa usando los recursos que estaban disponibles al momento de la ejecución (partición `cpu` estaba completamente ocupada). Es con ello que el hardware usado fue el siguiente:
+
+- **CPU:** AMD EPYC 9534. Se limitó la ejecución a 24 hilos (`NT = 24`), que eran los que se encontraban disponibles.
+- **GPU:** NVIDIA A100 40GB.
+
+A continuación, se presentan las curvas de tiempo de ejecución y el factor de aceleración (Speedup) obtenido:
 
 ![Gráfico benchmark](benchmark_matmul.png)
 
 ### Análisis de resultados
 
-En el gráfico de Tiempo de Ejecución se observa que la versión CPU presenta un crecimiento acelerado del tiempo a medida que aumenta el tamaño de la matriz.
+En el gráfico de Tiempo de Ejecución se observa que la versión CPU presenta un crecimiento acelerado del tiempo a medida que aumenta el tamaño de la matriz, alcanzando los **700 ms** para `N = 4096`. Las versiones GPU superan a la CPU a partir de tamaños de matriz medianos, manteniendo tiempos inferiores a **100 ms** para `N = 4096`. Para tamaños pequeños (`N < 500`), el beneficio es menor debido al overhead asociado al lanzamiento de kernels y a la gestión de la ejecución en GPU.
 
-Las versiones GPU superan a la CPU a partir de tamaños de matriz medianos. Para tamaños pequeños, el beneficio es menor debido al overhead asociado al lanzamiento de kernels y a la gestión de la ejecución en GPU.
+Asimismo, la versión GPU que utiliza memoria compartida presenta el mejor rendimiento en todos los tamaños evaluados, especialmente para matrices grandes `N > 2000`. Esto se explica porque el uso de memoria compartida reduce significativamente los accesos a memoria global, permitiendo una mayor reutilización de datos y un mejor aprovechamiento de la jerarquía de memoria de la GPU.
 
-La versión GPU que utiliza memoria compartida presenta el mejor rendimiento en todos los tamaños evaluados, especialmente para matrices grandes. Esto se explica porque el uso de memoria compartida reduce significativamente los accesos a memoria global, permitiendo una mayor reutilización de datos y un mejor aprovechamiento de la jerarquía de memoria de la GPU.
+Respecto al gráfico de Speedup, se puede decir lo siguiente:
 
+- **Overhead inicial:** Cuando la matriz es pequeña (`N < 500`), el Speedup se ve reducido debido al costo fijo que tiene el lanzar los kernels y la transferencia de memoria entre CPU y GPU.
+
+- **Escalabilidad y memoria compartida:** A partir de `N = 1000`, la GPU empieza a ganar con crece ante la CPU. La implementación con memoria compartida logra un Speedup máximo de **~20.2x** respecto a la CPU, mientras que la versión normal alcanza un **~12.5x**. Lo anterior también demuestra la importancia del uso de la memoria compartida, la cual reduce drásticamente la cantidad de accesos a memoria global (más lenta), aliviando así el cuello de botella del bando de ancha.
 
 ### Conclusiones
 
-PENDIENTE
+Los resultados demuestran empíricamente la superioridad en el uso de las GPUs frente a las CPUs en problemas altamente paralelizables, como lo es la multiplicación de matrices. Lo cual nos hace ver que la decisión arquitectonica que tomemos respecto a los recursos que usemos (CPU o GPU) es crucial para que nuestros programas tengan un correcto desempeño, al trabajar con grandes cantidades de datos.
+
+También se debe destacar el rol extremadamente importante del uso de memoria compartida en GPU la cual, sin siquiera cambiar el recurso que estamos usando, nos permitió obtener una ganancia adicional de casi **8x** sobre la CPU comparada a la versión normal. Lo que también nos demuestra que la forma en que se implemente la paralelización es vital para extraer el máximo rendimiento del hardware que estemos usando.
