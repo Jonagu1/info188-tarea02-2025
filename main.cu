@@ -20,7 +20,6 @@
 
 using namespace std;
 
-// --- PROTOTIPOS ---
 void matrandom(int n, float *A);
 void printmat(int n, float* C, const char* name);
 void cpu_matrix_mult_optimized(float* A, float* B, float* C, int n);
@@ -32,7 +31,7 @@ __global__ void kernel_matmul(int n, float *a, float *b, float *c){
 
     // Chequeo de bordes
     if (tx < n && ty < n) {
-        float sum = 0.0f; // Faltaba inicializar esto en tu codigo original
+        float sum = 0.0f;
         for(int k=0; k<n; ++k){
             sum += a[ty*n + k] * b[k*n + tx];
         }
