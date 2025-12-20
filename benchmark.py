@@ -86,12 +86,14 @@ def main():
             print(f"[INFO] Usando algoritmo {alg} con {nt} hilos...")
 
             if num == 1:
+                nt = 24  # Estamos limitados a 24 núcleos en partición "A4000".
+
                 cmd = [
                     "srun",
                     "-p",
                     "A4000",  # Se deseaba usar partición "cpu" de Patagón, pero esta se encontraba completamente ocupada al momento de la experimentación.
                     "-c",
-                    "24",  # Estamos limitados a 24 hilos en partición "A4000".
+                    str(nt),
                     f"--container-workdir={os.getcwd()}",
                     "./prog",
                     str(n),
