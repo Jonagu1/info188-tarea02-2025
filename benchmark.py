@@ -73,8 +73,6 @@ def generate_graphs(n_values, times, speedup, speedup_shared):
 
 def main():
     n_values = [256, 512, 1024, 2048, 4096]
-    # Usamos la máxima cantidad de hilos posibles de CPU para que sea una comparación justa
-    nt = multiprocessing.cpu_count()
     times = {1: [], 2: [], 3: []}
 
     print("[INFO] Inicializando benchmark MATMUL")
@@ -83,13 +81,18 @@ def main():
         print(f"\n[INFO] Usando N= {n}...")
 
         for alg, num in [("CPU", 1), ("GPU", 2), ("GPU Memoria Compartida", 3)]:
+            # Usamos la máxima cantidad de hilos posibles de CPU para que sea una comparación justa contra GPU
+            nt = multiprocessing.cpu_count()
+
             print(f"[INFO] Usando algoritmo {alg}...")
 
             if num == 1:
                 cmd = [
                     "srun",
                     "-p",
-                    "cpu",
+                    "A4000",  # Se deseaba usar partición "cpu" de Patagón, pero esta se encontraba completamente ocupada al momento de la experimentación.
+                    "-c",
+                    str(nt),
                     f"--container-workdir={os.getcwd()}",
                     "./prog",
                     str(n),
@@ -101,6 +104,8 @@ def main():
                     "srun",
                     "-p",
                     "A4000",
+                    "-c",
+                    str(nt),
                     "--gpus=1",
                     "--container-name=cuda",
                     f"--container-workdir={os.getcwd()}",
